@@ -5,6 +5,7 @@
   --primary: #854d0e;
   --secondary: #475569;
   --accent: #0f766e;
+  --danger: #b91c1c;
   --border: #d9e2ef;
 }
 
@@ -18,7 +19,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -74,9 +76,18 @@ button {
 }
 
 .hero span {
-  max-width: 860px;
+  max-width: 900px;
   color: #526071;
   line-height: 1.75;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.hero-actions button {
+  padding: 0 14px;
 }
 
 .metrics {
@@ -101,6 +112,36 @@ button {
   font-size: 30px;
 }
 
+/* 放行结果通知条 */
+.notice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  border: 1px solid;
+  line-height: 1.6;
+}
+
+.notice.ok {
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+  color: #065f46;
+}
+
+.notice.warn {
+  background: #fff7ed;
+  border-color: #fdba74;
+  color: #9a3412;
+}
+
+.notice button {
+  flex-shrink: 0;
+  padding: 0 12px;
+}
+
 .workspace {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -108,8 +149,21 @@ button {
   margin-bottom: 18px;
 }
 
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
 .panel {
   padding: 22px;
+  margin-bottom: 18px;
+}
+
+.workspace .panel,
+.grid-2 .panel {
+  margin-bottom: 0;
 }
 
 .panel h2,
@@ -128,6 +182,24 @@ button {
   padding: 0 12px;
   border-color: color-mix(in srgb, var(--primary) 24%, var(--border));
   background: color-mix(in srgb, var(--primary) 8%, #ffffff);
+}
+
+.chips button.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+.mt {
+  margin-top: 22px;
+}
+
+.rules {
+  margin: 0;
+  padding-left: 18px;
+  color: #526071;
+  font-size: 13px;
+  line-height: 1.9;
 }
 
 .heading {
@@ -165,53 +237,412 @@ label span {
   font-size: 13px;
 }
 
-input {
+input,
+select {
   width: 100%;
   min-height: 42px;
   border-radius: 7px;
   border: 1px solid var(--border);
   padding: 0 12px;
+  background: #ffffff;
 }
 
-.records {
-  display: grid;
-  gap: 12px;
+input:disabled,
+select:disabled {
+  background: #f1f5f9;
+  color: #64748b;
 }
 
-.records article {
+.hint {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #9a3412;
+  background: #fff7ed;
+  border: 1px dashed #fdba74;
+  padding: 8px 12px;
+  border-radius: 7px;
+}
+
+.hint.ok {
+  color: #065f46;
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+}
+
+/* 状态徽标 */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge.valid {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.badge.pending {
+  background: #fef2f2;
+  color: var(--danger);
+  border: 1px solid #fecaca;
+}
+
+.badge.history {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.badge.none {
+  background: #fff7ed;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+}
+
+.badge.cutting {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.conflict-text {
+  color: var(--danger);
+  font-size: 13px;
+  margin-top: 6px;
+  line-height: 1.6;
+}
+
+.suggestion-text {
+  color: var(--accent);
+  font-size: 13px;
+  margin: 6px 0 0;
+  line-height: 1.6;
+}
+
+.meta-line {
+  color: #526071;
+  font-size: 13px;
+  margin: 4px 0;
+  line-height: 1.6;
+}
+
+.empty {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* 构件清单 */
+.comp-list {
   display: grid;
-  grid-template-columns: 54px 1fr;
-  gap: 14px;
-  align-items: center;
-  padding: 14px;
+  gap: 10px;
+  max-height: 540px;
+  overflow: auto;
+}
+
+.comp-row {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  text-align: left;
+  padding: 12px 14px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: #fbfdff;
 }
 
-.records b {
-  display: grid;
-  place-items: center;
-  height: 44px;
-  border-radius: 8px;
-  color: #ffffff;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
+.comp-row.active {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 25%, transparent);
 }
 
-.records h3 {
-  margin-bottom: 6px;
+.comp-row.has-conflict {
+  border-left: 4px solid var(--danger);
 }
 
-.records p {
-  margin: 0;
+.comp-row-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.comp-row-meta {
   color: #526071;
+  font-size: 13px;
+  margin-top: 6px;
   line-height: 1.6;
 }
 
-@media (max-width: 860px) {
+/* 历史版本 */
+.version-list {
+  display: grid;
+  gap: 10px;
+  max-height: 540px;
+  overflow: auto;
+}
+
+.version-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: #fbfdff;
+}
+
+.version-card.valid {
+  border-left: 4px solid var(--accent);
+}
+
+.version-card.pending {
+  border-left: 4px solid var(--danger);
+  background: #fffafa;
+}
+
+.version-card.history {
+  opacity: 0.82;
+}
+
+.version-card header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.version-card time {
+  margin-left: auto;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+/* 表格 */
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+th {
+  color: #64748b;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  background: #f8fafc;
+}
+
+td .badge {
+  margin-left: 6px;
+}
+
+tr.row-conflict td {
+  background: #fff7f7;
+}
+
+tr.row-replace td {
+  background: #f8fbff;
+}
+
+/* 病害标记图 */
+.legend {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  color: #64748b;
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+
+.legend .dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.dot.valid {
+  background: var(--accent);
+}
+
+.dot.pending {
+  background: var(--danger);
+}
+
+.disease-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.disease-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 48px;
+  gap: 12px;
+  align-items: center;
+}
+
+.disease-label strong {
+  display: block;
+  font-size: 14px;
+}
+
+.disease-label small {
+  color: #94a3b8;
+}
+
+.disease-track {
+  position: relative;
+  height: 26px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f1f5f9, #e2e8f0);
+  border: 1px solid var(--border);
+}
+
+.disease-track .tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #cbd5e1;
+}
+
+.marker {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.marker.valid {
+  background: var(--accent);
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.marker.pending {
+  background: transparent;
+  border: 2px dashed var(--danger);
+  width: 16px;
+  height: 16px;
+}
+
+.disease-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #475569;
+}
+
+/* 构件关系视图 */
+.tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 0 12px;
+}
+
+.tab.active {
+  background: var(--secondary);
+  border-color: var(--secondary);
+  color: #ffffff;
+}
+
+.relation-graph {
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  background: #fbfdff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.relation-graph .edge {
+  stroke: #cbd5e1;
+  stroke-width: 2;
+}
+
+.relation-graph .row-label {
+  fill: #94a3b8;
+  font-size: 12px;
+}
+
+.relation-graph .node {
+  cursor: pointer;
+}
+
+.relation-graph .node circle {
+  fill: #ecfdf5;
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.relation-graph .node.conflict circle {
+  fill: #fef2f2;
+  stroke: var(--danger);
+  stroke-dasharray: 5 4;
+}
+
+.relation-graph .node.active circle {
+  stroke-width: 4;
+}
+
+.relation-graph .node-member {
+  text-anchor: middle;
+  font-size: 13px;
+  font-weight: 700;
+  fill: #172033;
+}
+
+.relation-graph .node-id {
+  text-anchor: middle;
+  font-size: 12px;
+  font-weight: 600;
+  fill: #334155;
+}
+
+.relation-graph .node-sub {
+  text-anchor: middle;
+  font-size: 11px;
+  fill: #94a3b8;
+}
+
+.relation-graph .node-warn {
+  text-anchor: middle;
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--danger);
+}
+
+@media (max-width: 960px) {
   .metrics,
   .workspace,
-  .field-grid {
+  .field-grid,
+  .grid-2 {
     grid-template-columns: 1fr;
   }
 
